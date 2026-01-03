@@ -99,6 +99,7 @@ export const ItemSchema = v.object({
 	type: v.string(),
 	class_name: v.string(),
 	name: v.string(),
+	item_tier: v.number(),
 	// start_trained: v.boolean(),
 	// image: v.optional(v.string(), ''),
 	// image_webp: v.optional(v.string(), '')

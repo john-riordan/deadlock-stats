@@ -4,6 +4,8 @@
 	import { getItems, getVersions } from '$lib/api/static.remote';
 	import type { Item } from '$lib/schemas/static';
 
+	let search = $state('');
+
 	let versions = await getVersions();
 
 	let items = await getItems({
@@ -25,9 +27,13 @@
 </script>
 
 {#if items.success}
+	<input type="text" bind:value={search} placeholder="Search" />
+
 	<h1>Vitality</h1>
 	<div class="items">
-		{#each vitality.sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name)) as item (item.id)}
+		{#each vitality
+			.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))
+			.sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name)) as item (item.id)}
 			<a href={resolve(`/items/${item.class_name}`)} class="item">
 				<img src={item.shop_image_small_webp} alt={item.name} width={100} height={100} />
 				<span>{item.name}</span>
@@ -37,7 +43,9 @@
 	</div>
 	<h1>Spirit</h1>
 	<div class="items">
-		{#each spirit.sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name)) as item (item.id)}
+		{#each spirit
+			.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))
+			.sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name)) as item (item.id)}
 			<a href={resolve(`/items/${item.class_name}`)} class="item">
 				<img src={item.shop_image_small_webp} alt={item.name} width={100} height={100} />
 				<span>{item.name}</span>
@@ -47,7 +55,9 @@
 	</div>
 	<h1>Weapon</h1>
 	<div class="items">
-		{#each weapon.sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name)) as item (item.id)}
+		{#each weapon
+			.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))
+			.sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name)) as item (item.id)}
 			<a href={resolve(`/items/${item.class_name}`)} class="item">
 				<img src={item.shop_image_small_webp} alt={item.name} width={100} height={100} />
 				<span>{item.name}</span>

@@ -14,6 +14,10 @@
 	);
 </script>
 
+<svelte:head>
+	<title>{item?.name} - Deadlock Item</title>
+</svelte:head>
+
 {#if item}
 	<img src={item.shop_image_small_webp} alt={item.name} width={100} height={100} />
 	<h1>{item.name}</h1>
