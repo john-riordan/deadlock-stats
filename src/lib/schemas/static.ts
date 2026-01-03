@@ -100,8 +100,21 @@ export const ItemSchema = v.object({
 	class_name: v.string(),
 	name: v.string(),
 	// start_trained: v.boolean(),
-	image: v.optional(v.string(), ''),
-	image_webp: v.optional(v.string(), '')
+	// image: v.optional(v.string(), ''),
+	// image_webp: v.optional(v.string(), '')
+	shop_image: v.optional(v.string(), ''),
+	shop_image_webp: v.optional(v.string(), ''),
+	shop_image_small: v.optional(v.string(), ''),
+	shop_image_small_webp: v.optional(v.string(), ''),
+	disabled: v.optional(v.boolean(), false),
+	description: v.object({
+		desc: v.optional(v.string(), '')
+	}),
+	activation: v.string(),
+	is_active_item: v.boolean(),
+	shopable: v.boolean(),
+	cost: v.number(),
+	item_slot_type: v.picklist(['vitality', 'spirit', 'weapon'])
 	// heroes: [],
 	// properties: v.object({
 	// 	AbilityCooldown: v.object({
