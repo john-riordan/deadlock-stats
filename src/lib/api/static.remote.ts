@@ -2,7 +2,7 @@ import * as v from 'valibot';
 
 import { prerender, query } from '$app/server';
 
-import { HeroesSchema, HeroSchema, VersionsSchema } from '$lib/schemas/static';
+import { HeroesSchema, HeroSchema, ItemsSchema, VersionsSchema } from '$lib/schemas/static';
 
 export const getVersions = query(async () => {
 	const url = 'https://assets.deadlock-api.com/v2/client-versions';
@@ -35,6 +35,51 @@ export const getHero = prerender(
 		const data = await res.json();
 
 		const parsed = v.safeParse(HeroSchema, data);
+
+		return parsed;
+	}
+);
+
+export const getHeroByName = prerender(
+	v.object({ name: v.string(), language: v.string(), clientVersion: v.number() }),
+	async ({ name, language = 'english', clientVersion = 6071 }) => {
+		const url = `https://assets.deadlock-api.com/v2/heroes/by-name/${name}?language=${language}&client_version=${clientVersion}&only_active=true`;
+		const res = await fetch(url);
+		const data = await res.json();
+
+		const parsed = v.safeParse(HeroSchema, data);
+
+		return parsed;
+	}
+);
+
+export const getItems = prerender(
+	v.object({ language: v.string(), clientVersion: v.number() }),
+	async ({ language = 'english', clientVersion = 6071 }) => {
+		const url = `https://assets.deadlock-api.com/v2/items?language=${language}&client_version=${clientVersion}`;
+		const res = await fetch(url);
+		const data = await res.json();
+
+		const parsed = v.safeParse(ItemsSchema, data);
+
+		return parsed;
+	}
+);
+
+export const getItemsByType = prerender(
+	v.object({
+		type: v.picklist(['weapon', 'ability', 'upgrade', 'tech', 'armor']),
+		language: v.string(),
+		clientVersion: v.number()
+	}),
+	async ({ type, language = 'english', clientVersion = 6071 }) => {
+		const url = `https://assets.deadlock-api.com/v2/items/by-type/${type}?language=${language}&client_version=${clientVersion}`;
+		const res = await fetch(url);
+		const data = await res.json();
+
+		console.log(data);
+
+		const parsed = v.safeParse(ItemsSchema, data);
 
 		return parsed;
 	}
