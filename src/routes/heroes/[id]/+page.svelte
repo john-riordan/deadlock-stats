@@ -3,6 +3,7 @@
 	import { page } from '$app/state';
 
 	import { getAbilities, getHeroes, getVersions } from '$lib/api/static.remote';
+	import { getHeroBuilds } from '$lib/api/data.remote';
 </script>
 
 <svelte:boundary>
@@ -28,6 +29,9 @@
 			? heroes.output.filter((h) => h.hero_type === hero.hero_type && h.id !== hero.id)
 			: []}
 
+	{@const builds = await getHeroBuilds({ heroId: hero?.id ?? 0 })}
+	{console.log(builds)}
+
 	{#if hero}
 		<header>
 			<img src={hero.images.icon_image_small_webp} alt={hero.name} width={100} height={100} />
@@ -41,6 +45,18 @@
 				{#each heroSpells as spell (spell.id)}
 					<img src={spell.image_webp} alt={spell.name} width={100} height={100} />
 				{/each}
+			</div>
+		{/if}
+
+		{#if builds.success && builds.output.length > 0}
+			<div class="builds">
+				{#each builds.output.sort((a, b) => b.num_weekly_favorites - a.num_weekly_favorites) as build, index (index)}
+					<div class="build">
+						<h2>{build.hero_build.name}</h2>
+						<p>{build.hero_build.description}</p>
+						<span>Likes: {build.num_weekly_favorites}</span>
+					</div>
+				{/each}3
 			</div>
 		{/if}
 
@@ -82,6 +98,20 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
 		gap: 0.5rem;
+	}
+
+	.builds {
+		display: grid;
+		grid-auto-rows: min-content;
+		gap: 2rem;
+	}
+	.build {
+		display: grid;
+
+		h2,
+		p {
+			margin: 0;
+		}
 	}
 
 	.similar-heroes {

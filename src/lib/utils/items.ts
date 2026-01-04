@@ -1,7 +1,7 @@
 import type { Item } from '$lib/schemas/static';
 
 export function validItem(item: Item) {
-	return !item.disabled && item.shop_image_small_webp;
+	return !item.disabled && item.shopable && item.shop_image_small_webp;
 }
 
 export function itemGroups(items: Item[]) {
