@@ -3,6 +3,7 @@ import * as v from 'valibot';
 import { prerender, query } from '$app/server';
 
 import {
+	AbilitiesSchema,
 	HeroesSchema,
 	HeroSchema,
 	ItemSchema,
@@ -81,6 +82,20 @@ export const getItemByClassName = prerender(
 		const data = await res.json();
 
 		const parsed = v.safeParse(ItemSchema, data);
+
+		return parsed;
+	}
+);
+
+export const getAbilities = prerender(
+	v.object({ language: v.string(), clientVersion: v.number() }),
+	async ({ language = 'english', clientVersion = 6071 }) => {
+		const type = 'ability';
+		const url = `https://assets.deadlock-api.com/v2/items/by-type/${type}?language=${language}&client_version=${clientVersion}`;
+		const res = await fetch(url);
+		const data = await res.json();
+
+		const parsed = v.safeParse(AbilitiesSchema, data);
 
 		return parsed;
 	}

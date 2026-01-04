@@ -3,6 +3,7 @@
 	import { page } from '$app/state';
 
 	import { getItems, getVersions } from '$lib/api/static.remote';
+	import { validItem } from '$lib/utils/items';
 
 	let versions = await getVersions();
 	let items = await getItems({
@@ -20,7 +21,10 @@
 		if (!items.success || !item) return [];
 		return items.success
 			? items.output.filter(
-					(i) => i.item_tier === item.item_tier && i.item_slot_type === item.item_slot_type
+					(i) =>
+						i.item_tier === item.item_tier &&
+						i.item_slot_type === item.item_slot_type &&
+						validItem(i)
 				)
 			: [];
 	});
@@ -34,6 +38,8 @@
 	<img src={item.shop_image_small_webp} alt={item.name} width={100} height={100} />
 	<h1>{item.name}</h1>
 	<span>{item.cost} Souls</span>
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	<p>{@html item.description.desc}</p>
 	{#if relatedItems.length > 0}
 		<h2>Related Items</h2>
 		<div class="related-items">
@@ -49,9 +55,8 @@
 			{/each}
 		</div>
 	{/if}
-	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	<p>{@html item.description.desc}</p>
-	<pre>{JSON.stringify(item, null, 2)}</pre>
+
+	<!-- <pre>{JSON.stringify(item, null, 2)}</pre> -->
 {:else}
 	<h1>Item not found</h1>
 {/if}

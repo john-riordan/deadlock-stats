@@ -9,14 +9,25 @@
 </script>
 
 {#if heroes.success}
-	<h1>Heroes</h1>
-	<!-- <pre>{JSON.stringify(heroes.output, null, 2)}</pre> -->
-	{#each heroes.output as hero (hero.id)}
-		<a href={resolve(`/heroes/${hero.id}`)}>
-			<h2>{hero.name}</h2>
-			<img src={hero.images.minimap_image} alt={hero.name} />
-		</a>
-	{/each}
-{:else}
-	<!-- <pre>{JSON.stringify(heroes, null, 2)}</pre> -->
-{/if}
+	<div class="grid">
+		{#each heroes.output as hero (hero.id)}
+			<a href={resolve(`/heroes/${hero.id}`)}>
+				<img
+					src={hero.images.top_bar_vertical_image_webp}
+					alt={hero.name}
+					width={100}
+					height={100}
+				/>
+				<h2>{hero.name}</h2>
+			</a>
+		{/each}
+	</div>
+{:else}{/if}
+
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+		gap: 1rem;
+	}
+</style>

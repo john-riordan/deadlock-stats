@@ -319,3 +319,21 @@ export type Item = v.InferOutput<typeof ItemSchema>;
 
 export const ItemsSchema = v.array(ItemSchema);
 export type Items = v.InferOutput<typeof ItemsSchema>;
+
+export const AbilitySchema = v.object({
+	id: v.number(),
+	hero: v.optional(v.number(), 0),
+	class_name: v.string(),
+	name: v.string(),
+	description: v.object({
+		desc: v.optional(v.string(), '')
+	}),
+	image: v.optional(v.string(), ''),
+	image_webp: v.optional(v.string(), ''),
+	type: v.literal('ability'),
+	ability_type: v.string()
+});
+export type Ability = v.InferOutput<typeof AbilitySchema>;
+
+export const AbilitiesSchema = v.array(AbilitySchema);
+export type Abilities = v.InferOutput<typeof AbilitiesSchema>;
