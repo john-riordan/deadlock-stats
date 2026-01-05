@@ -60,3 +60,30 @@ export type Build = v.InferOutput<typeof BuildSchema>;
 
 export const BuildsSchema = v.array(BuildSchema);
 export type Builds = v.InferOutput<typeof BuildsSchema>;
+
+export const HeroesStatsSchema = v.array(
+	v.object({
+		hero_id: v.number(),
+		bucket: v.number(),
+		wins: v.number(),
+		losses: v.number(),
+		matches: v.number(),
+		matches_per_bucket: v.number(),
+		players: v.number(),
+		total_kills: v.number(),
+		total_deaths: v.number(),
+		total_assists: v.number(),
+		total_net_worth: v.number(),
+		total_last_hits: v.number(),
+		total_denies: v.number(),
+		total_player_damage: v.number(),
+		total_player_damage_taken: v.number(),
+		total_boss_damage: v.number(),
+		total_creep_damage: v.number(),
+		total_neutral_damage: v.number(),
+		total_max_health: v.number(),
+		total_shots_hit: v.number(),
+		total_shots_missed: v.number()
+	})
+);
+export type HeroesStats = v.InferOutput<typeof HeroesStatsSchema>;

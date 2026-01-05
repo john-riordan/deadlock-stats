@@ -60,6 +60,19 @@ export const getHeroByName = prerender(
 	}
 );
 
+export const getItemsAndAbilities = prerender(
+	v.object({ language: v.string(), clientVersion: v.number() }),
+	async ({ language = 'english', clientVersion = 6071 }) => {
+		const url = `https://assets.deadlock-api.com/v2/items?language=${language}&client_version=${clientVersion}`;
+		const res = await fetch(url);
+		const data = await res.json();
+
+		const parsed = v.safeParse(ItemsSchema, data);
+
+		return parsed;
+	}
+);
+
 export const getItems = prerender(
 	v.object({ language: v.string(), clientVersion: v.number() }),
 	async ({ language = 'english', clientVersion = 6071 }) => {
