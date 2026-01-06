@@ -1,5 +1,50 @@
 import * as v from 'valibot';
 
+export const SteamProfileSchema = v.array(
+	v.object({
+		account_id: v.number(),
+		avatar: v.string(),
+		avatarfull: v.string(),
+		avatarmedium: v.string(),
+		personaname: v.string(),
+		profileurl: v.string(),
+		realname: v.nullish(v.string(), null),
+		countrycode: v.string(),
+		last_updated: v.number()
+	})
+);
+export type SteamProfile = v.InferOutput<typeof SteamProfileSchema>;
+
+export const SteamProfilesSearchSchema = v.array(SteamProfileSchema);
+export type SteamProfilesSearch = v.InferOutput<typeof SteamProfilesSearchSchema>;
+
+export const PlayerMatchHistorySchema = v.array(
+	v.object({
+		account_id: v.number(),
+		match_id: v.number(),
+		hero_id: v.number(),
+		hero_level: v.number(),
+		start_time: v.number(),
+		game_mode: v.number(),
+		match_mode: v.number(),
+		player_team: v.number(),
+		player_kills: v.number(),
+		player_deaths: v.number(),
+		player_assists: v.number(),
+		denies: v.number(),
+		net_worth: v.number(),
+		last_hits: v.number(),
+		team_abandoned: v.nullish(v.boolean(), false),
+		abandoned_time_s: v.nullish(v.number(), null),
+		match_duration_s: v.number(),
+		match_result: v.number(),
+		objectives_mask_team0: v.number(),
+		objectives_mask_team1: v.number(),
+		username: v.nullish(v.string(), '')
+	})
+);
+export type PlayerMatchHistory = v.InferOutput<typeof PlayerMatchHistorySchema>;
+
 export const BuildSchema = v.object({
 	hero_build: v.object({
 		hero_id: v.number(),
