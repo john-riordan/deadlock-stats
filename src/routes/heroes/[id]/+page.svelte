@@ -36,32 +36,27 @@
 			? heroes.output.filter((h) => h.hero_type === hero.hero_type && h.id !== hero.id)
 			: []}
 
-	{@const builds = await getHeroBuilds({ heroId: hero?.id ?? 0 })}
-	{@const items = await getItems({
-		language: 'english',
-		clientVersion: versions.success ? versions.output[0] : 6071
-	})}
-	{@const itemsMap = items.success
-		? items.output.reduce(
-				(acc, item) => {
-					acc[item.id] = item;
-					return acc;
-				},
-				{} as Record<number, Item>
-			)
-		: {}}
-
 	{#if hero}
+		<img
+			src={hero.images.background_image_webp}
+			alt={hero.name}
+			width={1920}
+			height={1080}
+			class="background-image"
+		/>
 		<header>
+			<img
+				src={hero.images.name_image}
+				alt={hero.name}
+				width={600}
+				height={100}
+				class="name-image"
+			/>
 			<img src={hero.images.icon_image_small_webp} alt={hero.name} width={100} height={100} />
-			<div>
-				<h1>{hero.name}</h1>
-				<!-- <p>{hero.description.lore}</p> -->
-			</div>
 		</header>
 		{#if heroSpells.length > 0}
 			<div class="spells">
-				{#each heroSpells as spell (spell.id)}
+				{#each heroSpells as spell, index (index)}
 					<img src={spell.image_webp} alt={spell.name} width={100} height={100} />
 				{/each}
 			</div>
@@ -125,48 +120,6 @@
 			</div>
 		{/if}
 
-		{#if builds.success && builds.output.length > 0}
-			<div class="builds">
-				{#each builds.output.sort((a, b) => b.num_weekly_favorites - a.num_weekly_favorites) as build, index (index)}
-					<div class="build">
-						<h2>{build.hero_build.name}</h2>
-						<span>
-							Last updated: {new Date(
-								build.hero_build.last_updated_timestamp * 1000
-							).toLocaleDateString()}
-						</span>
-						<p>{build.hero_build.description}</p>
-						<span>Likes: {build.num_weekly_favorites}</span>
-						<div class="groups">
-							{#each build.hero_build.details.mod_categories as group, i (i)}
-								<div class="group">
-									<h3>{group.name}</h3>
-									<div class="mods">
-										{#each group.mods as mod (mod.ability_id)}
-											{@const item = itemsMap[mod.ability_id]}
-											<div class="mod">
-												{#if item}
-													<img
-														src={item.shop_image_small_webp}
-														alt={item.name}
-														width={60}
-														height={60}
-													/>
-												{/if}
-												<span>{item?.name ?? mod.ability_id}</span>
-												<span>{mod.annotation}</span>
-												<!-- <span>{mod.imbue_target_ability_id}</span> -->
-											</div>
-										{/each}
-									</div>
-								</div>
-							{/each}
-						</div>
-					</div>
-				{/each}
-			</div>
-		{/if}
-
 		{#if similarHeroes.length > 0}
 			<h2>Similar Heroes</h2>
 			<div class="similar-heroes">
@@ -194,13 +147,92 @@
 	{/snippet}
 </svelte:boundary>
 
-<style>
-	header {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
+<!-- <svelte:boundary>
+	{@const versions = await getVersions()}
+	{@const builds = await getHeroBuilds({ heroId: parseInt(page.params.id || '0') ?? 0 })}
+	{@const items = await getItems({
+		language: 'english',
+		clientVersion: versions.success ? versions.output[0] : 6071
+	})}
+	{@const itemsMap = items.success
+		? items.output.reduce(
+				(acc, item) => {
+					acc[item.id] = item;
+					return acc;
+				},
+				{} as Record<number, Item>
+			)
+		: {}}
 
+	{#if builds.success && builds.output.length > 0}
+		<div class="builds">
+			{#each builds.output.sort((a, b) => b.num_weekly_favorites - a.num_weekly_favorites) as build, index (index)}
+				<div class="build">
+					<h2>{build.hero_build.name}</h2>
+					<span>
+						Last updated: {new Date(
+							build.hero_build.last_updated_timestamp * 1000
+						).toLocaleDateString()}
+					</span>
+					<p>{build.hero_build.description}</p>
+					<span>Likes: {build.num_weekly_favorites}</span>
+					<div class="groups">
+						{#each build.hero_build.details.mod_categories as group, i (i)}
+							<div class="group">
+								<h3>{group.name}</h3>
+								<div class="mods">
+									{#each group.mods as mod, index (index)}
+										{@const item = itemsMap[mod.ability_id]}
+										<div class="mod">
+											{#if item}
+												<img
+													src={item.shop_image_small_webp}
+													alt={item.name}
+													width={60}
+													height={60}
+												/>
+											{/if}
+											<span>{item?.name ?? mod.ability_id}</span>
+											<span>{mod.annotation}</span>
+										</div>
+									{/each}
+								</div>
+							</div>
+						{/each}
+					</div>
+				</div>
+			{/each}
+		</div>
+	{/if}
+
+	{#snippet failed(error)}
+		<h1>Error: {error}</h1>
+	{/snippet}
+	{#snippet pending()}
+		<h1>Loading builds...</h1>
+	{/snippet}
+</svelte:boundary> -->
+
+<style>
+	.background-image {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: -1;
+	}
+	header {
+		/* display: flex;
+		align-items: center;
+		gap: 1rem; */
+	}
+	.name-image {
+		margin-inline: auto;
+		height: 10rem;
+		width: auto;
+	}
 	.spells {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));

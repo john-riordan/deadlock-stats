@@ -12,12 +12,7 @@
 	<div class="grid">
 		{#each heroes.output as hero (hero.id)}
 			<a href={resolve(`/heroes/${hero.id}`)}>
-				<img
-					src={hero.images.top_bar_vertical_image_webp}
-					alt={hero.name}
-					width={100}
-					height={100}
-				/>
+				<img src={hero.images.icon_hero_card} alt={hero.name} width={100} height={100} />
 				<h2>{hero.name}</h2>
 			</a>
 		{/each}

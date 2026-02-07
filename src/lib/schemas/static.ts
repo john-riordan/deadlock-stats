@@ -8,14 +8,14 @@ export const HeroSchema = v.object({
 	class_name: v.string(),
 	name: v.string(),
 	description: v.object({
-		lore: v.string(),
+		lore: v.optional(v.string(), ''),
 		role: v.optional(v.string(), ''),
 		playstyle: v.optional(v.string(), '')
 	}),
 	tags: v.array(v.string()),
-	gun_tag: v.string(),
+	gun_tag: v.optional(v.string()),
 	hideout_rich_presence: v.optional(v.string(), ''),
-	hero_type: v.string(),
+	hero_type: v.optional(v.string()),
 	complexity: v.number(),
 	images: v.object({
 		icon_hero_card: v.string(),
@@ -26,10 +26,10 @@ export const HeroSchema = v.object({
 		minimap_image_webp: v.string(),
 		selection_image: v.optional(v.string(), ''),
 		selection_image_webp: v.optional(v.string(), ''),
-		top_bar_image: v.string(),
-		top_bar_image_webp: v.string(),
-		top_bar_vertical_image: v.string(),
-		top_bar_vertical_image_webp: v.string(),
+		// top_bar_image: v.string(),
+		// top_bar_image_webp: v.string(),
+		// top_bar_vertical_image: v.string(),
+		// top_bar_vertical_image_webp: v.string(),
 		background_image: v.string(),
 		background_image_webp: v.string(),
 		name_image: v.string()
